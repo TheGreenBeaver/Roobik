@@ -6,7 +6,9 @@ class RubiksCube {
     faces[0] = back
     faces[1] = left
     faces[2] = front
-    faces[3] =
+    faces[3] = right
+    faces[4] = up
+    faces[5] = down
     */
 //    private Face up;
 //    private Face down;
