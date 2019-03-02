@@ -2,6 +2,12 @@ class RubiksCube {
 
     private int size;
     private Face[] faces;
+    /*
+    faces[0] = back
+    faces[1] = left
+    faces[2] = front
+    faces[3] =
+    */
 //    private Face up;
 //    private Face down;
 //    private Face left;
@@ -12,12 +18,15 @@ class RubiksCube {
     RubiksCube(int size) {
         this.size = size;
         faces = new Face[6];
-//        up = new Face(size);
-//        down = new Face(size);
-//        left = new Face(size);
-//        right = new Face(size);
-//        front = new Face(size);
-//        back = new Face(size);
+        for (int i = 0; i < 6; i++)
+            faces[i] = new Face(size, i);
     }
 
+    public void rotateRow(int number, boolean clockwise) {
+
+    }
+
+    public int[][] getFace(int faceNumber) {
+        return faces[faceNumber].getMatrix();
+    }
 }
