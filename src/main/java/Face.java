@@ -10,7 +10,24 @@ class Face {
                 matrix[i][j] = colourNumber;
     }
 
+//    int[] getLine(boolean vertical, int number) {
+//        if (vertical)
+//            return matrix[number]
+//    }
+
     int[][] getMatrix(){
         return matrix;
+    }
+
+    void setMatrix(int[][] newMatrix) {
+        matrix = newMatrix;
+    }
+
+    int[] getLine(int number){
+        return matrix[number];
+    }
+
+    void setLine(int[] newLine, int number) {
+        matrix[number] = newLine;
     }
 }

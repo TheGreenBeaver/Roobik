@@ -10,12 +10,6 @@ class RubiksCube {
     faces[4] = up
     faces[5] = down
     */
-//    private Face up;
-//    private Face down;
-//    private Face left;
-//    private Face right;
-//    private Face front;
-//    private Face back;
 
     RubiksCube(int size) {
         this.size = size;
@@ -24,11 +18,35 @@ class RubiksCube {
             faces[i] = new Face(size, i);
     }
 
-    public void rotateRow(int number, boolean clockwise) {
+    public void rotateWholeCube(int axis, int clockwise) {
+        //0 = around y-axis, 1 = around x-axis, 2 = around z-axis
+        //clockwise == 1 <=> rotate clockwise, clockwise == -1 <=> rotate counter-clockwise
+        switch (axis) {
+            case 0: {
+                Face buffer = faces[0];
+                for (int i = 0; i < 4; i++) {
+
+                }
+            }
+        }
+    }
+
+    public void rotateWholeCube(int axis){
 
     }
 
-    public int[][] getFace(int faceNumber) {
-        return faces[faceNumber].getMatrix();
+//    public void rotateRowOrColumn(boolean isRow, int number, boolean clockwise) {
+//        if (isRow) {
+//            int[] buffer =
+//        }
+//    }
+
+    public void getFace(int faceNumber) {
+        int[][] faceToShow = faces[faceNumber].getMatrix();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(faceToShow[i][j]+" ");
+            System.out.println();
+        }
     }
 }
