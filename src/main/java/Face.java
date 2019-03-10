@@ -10,11 +10,6 @@ class Face {
                 matrix[i][j] = colourNumber;
     }
 
-//    int[] getLine(boolean vertical, int number) {
-//        if (vertical)
-//            return matrix[number]
-//    }
-
     int[][] getMatrix(){
         return matrix;
     }
@@ -22,12 +17,27 @@ class Face {
     void setMatrix(int[][] newMatrix) {
         matrix = newMatrix;
     }
-
-    int[] getLine(int number){
-        return matrix[number];
+    // 90 degrees rotation
+    void rotate(boolean clockwiseOrNot) {
+        int[][] rotated = new int[size][size];
+        if (clockwiseOrNot) {
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    rotated[i][j] = matrix[size - j - 1][i];
+        } else {
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++) {
+                    rotated[i][j] = matrix[j][size - i - 1];
+                }
+        }
+        matrix = rotated;
     }
-
-    void setLine(int[] newLine, int number) {
-        matrix[number] = newLine;
+    // 180 degrees rotation
+    void rotate() {
+        int[][] rotated = new int[size][size];
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                rotated[i][j] = matrix[size - 1 - j][size - 1 - i];
+        matrix = rotated;
     }
 }
