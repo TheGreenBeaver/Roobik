@@ -1,6 +1,10 @@
 class RubiksCube {
 
     private static final int FACES_AMOUNT = 6;
+    private static final int[] Y_AXIS_FACES_ORDER_CLOCKWISE = {0, 4, 2, 5};
+    private static final int[] Z_AXIS_FACES_ORDER_CLOCKWISE = {4, 1, 5, 3};
+    private static final int[] Y_AXIS_FACES_ORDER_COUNTER_CLOCKWISE = {0, 5, 2, 4};
+    private static final int[] Z_AXIS_FACES_ORDER_COUNTER_CLOCKWISE = {4, 3, 5, 1};
 
     private int size;
     private Face[] faces;
@@ -44,7 +48,22 @@ class RubiksCube {
                 break;
             }
             case 1: {
-                break;
+                int[] buffer = faces[0].getLine(layerNumber, false);
+                if (clockwise) {
+                    for (int i = 0; i < 2; i++) {
+                        faces[Y_AXIS_FACES_ORDER_CLOCKWISE[i]]
+                                .setLine(faces[Y_AXIS_FACES_ORDER_CLOCKWISE[i + 1]].getLine(layerNumber, false),
+                                        layerNumber, false);
+                    }
+                    faces[5].setLine(buffer, layerNumber, false);
+                } else {
+                    for (int i = 0; i < 2; i++) {
+                        faces[Y_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i]]
+                                .setLine(faces[Y_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i + 1]].getLine(layerNumber, false),
+                                        layerNumber, false);
+                    }
+                    faces[4].setLine(buffer, layerNumber, false);
+                }
             }
             case 2: {
                 break;
@@ -103,14 +122,14 @@ class RubiksCube {
                 faces[3].rotate(clockwise);
                 int[][] buffer = faces[0].getFace();
                 if (clockwise) {
-                    faces[0].setFace(faces[4]);
-                    faces[4].setFace(faces[2]);
-                    faces[2].setFace(faces[5]);
+                    for (int i = 0; i < 2; i++) {
+                        faces[Y_AXIS_FACES_ORDER_CLOCKWISE[i]].setFace(faces[Y_AXIS_FACES_ORDER_CLOCKWISE[i + 1]]);
+                    }
                     faces[5].setMatrix(buffer);
                 } else {
-                    faces[0].setFace(faces[5]);
-                    faces[5].setFace(faces[2]);
-                    faces[2].setFace(faces[4]);
+                    for (int i = 0; i < 2; i++) {
+                        faces[Y_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i]].setFace(faces[Y_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i + 1]]);
+                    }
                     faces[4].setMatrix(buffer);
                 }
                 break;
@@ -120,15 +139,15 @@ class RubiksCube {
                 faces[0].rotate(clockwise);
                 int[][] buffer = faces[4].getFace();
                 if (clockwise) {
-                    faces[4].setFace(faces[1]);
-                    faces[1].setFace(faces[5]);
-                    faces[5].setFace(faces[3]);
+                    for (int i = 0; i < 2; i++) {
+                        faces[Z_AXIS_FACES_ORDER_CLOCKWISE[i]].setFace(faces[Z_AXIS_FACES_ORDER_CLOCKWISE[i + 1]]);
+                    }
                     faces[3].setMatrix(buffer);
                 }
                 else {
-                    faces[4].setFace(faces[3]);
-                    faces[3].setFace(faces[5]);
-                    faces[5].setFace(faces[1]);
+                    for (int i = 0; i < 2; i++) {
+                        faces[Z_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i]].setFace(faces[Z_AXIS_FACES_ORDER_COUNTER_CLOCKWISE[i + 1]]);
+                    }
                     faces[1].setMatrix(buffer);
                 }
                 break;
@@ -162,7 +181,8 @@ class RubiksCube {
 
     int[][] getFace(int faceNumber) {
         if (faceNumber < 0 || faceNumber >= FACES_AMOUNT)
-            throw new IllegalArgumentException("The value of faceNumber can only be in 0-5 range. Actually was " + faceNumber);
+            throw new IllegalArgumentException("The value of faceNumber can only be in 0-" + (FACES_AMOUNT - 1) +
+                    " range. Actually was " + faceNumber);
         return faces[faceNumber].getFace();
     }
 }
