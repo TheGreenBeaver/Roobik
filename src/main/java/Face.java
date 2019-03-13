@@ -26,13 +26,11 @@ class Face {
     }
 
     void setMatrix(int[][] newMatrix) {
-        for (int i = 0; i < size; i++) {
-            matrix[i] = Arrays.copyOf(newMatrix[i], size);
-        }
+        UsefulOperations.equalizeMatrix(newMatrix, matrix);
     }
 
     void setFace(Face newFace) {
-        this.setMatrix(newFace.getFace());
+        UsefulOperations.equalizeMatrix(newFace.getFace(), matrix);
     }
 
     // 90 degrees rotation
@@ -47,7 +45,7 @@ class Face {
                 for (int j = 0; j < size; j++)
                     rotated[i][j] = matrix[j][size - i - 1];
         }
-        this.setMatrix(rotated);
+        UsefulOperations.equalizeMatrix(rotated, matrix);
     }
 
     // 180 degrees rotation
@@ -56,7 +54,7 @@ class Face {
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 rotated[i][j] = matrix[size - 1 - j][size - 1 - i];
-        this.setMatrix(rotated);
+        UsefulOperations.equalizeMatrix(rotated, matrix);
     }
 
     int[] getLine(int number, boolean horizontal) {
