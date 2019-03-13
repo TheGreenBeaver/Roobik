@@ -1,5 +1,7 @@
 class RubiksCube {
 
+    private static final int FACES_AMOUNT = 6;
+
     private int size;
     private Face[] faces;
     /*
@@ -13,80 +15,130 @@ class RubiksCube {
 
     RubiksCube(int size) {
         this.size = size;
-        faces = new Face[6];
-        for (int i = 0; i < 6; i++)
+        faces = new Face[FACES_AMOUNT];
+        for (int i = 0; i < FACES_AMOUNT; i++)
             faces[i] = new Face(size, i);
     }
-    // 90 degrees rotation
-    void rotateLayer(boolean horizontal, int layerNumber, boolean clockwiseOrNot) {
 
-    }
-    // 180 degrees rotation
-    void rotateLayer(boolean horizontal, int layerNumber) {
-
-    }
     // 90 degrees rotation
-    void rotateWholeCube(int axis, boolean clockwiseOrNot) {
+    void rotateLayer(int axis, int layerNumber, boolean clockwise) {
         //0 = around y-axis, 1 = around x-axis, 2 = around z-axis
+        if (layerNumber < 0 || layerNumber >= size)
+            throw new IllegalArgumentException("The value of layerNumber can only be in 0-"
+                    + (size - 1) + " range. Actually was " + layerNumber);
         switch (axis) {
             case 0: {
-                if (clockwiseOrNot) {
-                    int[][] buffer = faces[0].getMatrix();
+                if (clockwise) {
+                    int[] buffer = faces[0].getLine(layerNumber, true);
                     for (int i = 0; i < 3; i++) {
-                        faces[i].setMatrix(faces[i + 1].getMatrix());
+                        faces[i].setLine(faces[i + 1].getLine(layerNumber, true), layerNumber, true);
                     }
-                    faces[3].setMatrix(buffer);
-
-                }
-                else {
-                    int[][] buffer = faces[3].getMatrix();
+                    faces[3].setLine(buffer, layerNumber, true);
+                } else {
+                    int[] buffer = faces[3].getLine(layerNumber, true);
                     for (int i = 3; i > 0; i--) {
-                        faces[i].setMatrix(faces[i - 1].getMatrix());
+                        faces[i].setLine(faces[i - 1].getLine(layerNumber, true), layerNumber, true);
                     }
-                    faces[0].setMatrix(buffer);
+                    faces[0].setLine(buffer, layerNumber, true);
                 }
-                faces[4].rotate(clockwiseOrNot);
-                faces[5].rotate(clockwiseOrNot);
                 break;
             }
             case 1: {
-                faces[1].rotate(clockwiseOrNot);
-                faces[3].rotate(clockwiseOrNot);
-                int[][] buffer = faces[0].getMatrix();
-                if (clockwiseOrNot) {
-                    faces[0].setMatrix(faces[4].getMatrix());
-                    faces[4].setMatrix(faces[2].getMatrix());
-                    faces[2].setMatrix(faces[5].getMatrix());
-                    faces[5].setMatrix(buffer);
+                break;
+            }
+            case 2: {
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("The value of axis can only be 0, 1 or 2. Actually was " + axis);
+            }
+        }
+    }
+
+    // 180 degrees rotation
+    void rotateLayer(int axis, int layerNumber) {
+        if (layerNumber < 0 || layerNumber >= size)
+            throw new IllegalArgumentException("The value of layerNumber can only be in 0-"
+                    + (size - 1) + " range. Actually was " + layerNumber);
+        switch (axis) {
+            case 0: {
+                break;
+            }
+            case 1: {
+                break;
+            }
+            case 2: {
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("The value of axis can only be 0, 1 or 2. Actually was " + axis);
+            }
+        }
+    }
+
+    // 90 degrees rotation
+    void rotateWholeCube(int axis, boolean clockwise) {
+        //0 = around y-axis, 1 = around x-axis, 2 = around z-axis
+        switch (axis) {
+            case 0: {
+                faces[4].rotate(clockwise);
+                faces[5].rotate(clockwise);
+                if (clockwise) {
+                    int[][] buffer = faces[0].getFace();
+                    for (int i = 0; i < 3; i++) {
+                        faces[i].setFace(faces[i + 1]);
+                    }
+                    faces[3].setMatrix(buffer);
+                } else {
+                    int[][] buffer = faces[3].getFace();
+                    for (int i = 3; i > 0; i--) {
+                        faces[i].setFace(faces[i - 1]);
+                    }
+                    faces[0].setMatrix(buffer);
                 }
-                else {
-                    faces[0].setMatrix(faces[5].getMatrix());
-                    faces[5].setMatrix(faces[2].getMatrix());
-                    faces[2].setMatrix(faces[4].getMatrix());
+                break;
+            }
+            case 1: {
+                faces[1].rotate(clockwise);
+                faces[3].rotate(clockwise);
+                int[][] buffer = faces[0].getFace();
+                if (clockwise) {
+                    faces[0].setFace(faces[4]);
+                    faces[4].setFace(faces[2]);
+                    faces[2].setFace(faces[5]);
+                    faces[5].setMatrix(buffer);
+                } else {
+                    faces[0].setFace(faces[5]);
+                    faces[5].setFace(faces[2]);
+                    faces[2].setFace(faces[4]);
                     faces[4].setMatrix(buffer);
                 }
                 break;
             }
             case 2: {
-                faces[2].rotate(clockwiseOrNot);
-                faces[0].rotate(clockwiseOrNot);
-                int[][] buffer = faces[4].getMatrix();
-                if (clockwiseOrNot) {
-                    faces[4].setMatrix(faces[1].getMatrix());
-                    faces[1].setMatrix(faces[5].getMatrix());
-                    faces[5].setMatrix(faces[3].getMatrix());
+                faces[2].rotate(clockwise);
+                faces[0].rotate(clockwise);
+                int[][] buffer = faces[4].getFace();
+                if (clockwise) {
+                    faces[4].setFace(faces[1]);
+                    faces[1].setFace(faces[5]);
+                    faces[5].setFace(faces[3]);
                     faces[3].setMatrix(buffer);
                 }
                 else {
-                    faces[4].setMatrix(faces[3].getMatrix());
-                    faces[3].setMatrix(faces[5].getMatrix());
-                    faces[5].setMatrix(faces[1].getMatrix());
+                    faces[4].setFace(faces[3]);
+                    faces[3].setFace(faces[5]);
+                    faces[5].setFace(faces[1]);
                     faces[1].setMatrix(buffer);
                 }
                 break;
             }
+            default: {
+                throw new IllegalArgumentException("The value of axis can only be 0, 1 or 2. Actually was " + axis);
+            }
         }
     }
+
     //180 degrees rotation
     public void rotateWholeCube(int axis) {
         switch (axis) {
@@ -102,15 +154,15 @@ class RubiksCube {
                 faces[0].rotate();
                 faces[2].rotate();
             }
+            default: {
+                throw new IllegalArgumentException("The value of axis can only be 0, 1 or 2. Actually was " + axis);
+            }
         }
     }
 
-    void getFace(int faceNumber) {
-        int[][] faceToShow = faces[faceNumber].getMatrix();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++)
-                System.out.print(faceToShow[i][j]+" ");
-            System.out.println();
-        }
+    int[][] getFace(int faceNumber) {
+        if (faceNumber < 0 || faceNumber >= FACES_AMOUNT)
+            throw new IllegalArgumentException("The value of faceNumber can only be in 0-5 range. Actually was " + faceNumber);
+        return faces[faceNumber].getFace();
     }
 }
