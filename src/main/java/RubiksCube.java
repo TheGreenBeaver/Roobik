@@ -26,7 +26,7 @@ class RubiksCube {
 
     // 90 degrees rotation
     void rotateLayer(int axis, int layerNumber, boolean clockwise) {
-        // 0 = around y-axis, 1 = around x-axis, 2 = around z-axis
+        //0 = around y-axis, 1 = around x-axis, 2 = around z-axis
         if (layerNumber < 0 || layerNumber >= size)
             throw new IllegalArgumentException("The value of layerNumber can only be in 0-"
                     + (size - 1) + " range. Actually was " + layerNumber);
