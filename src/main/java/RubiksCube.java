@@ -48,13 +48,13 @@ public class RubiksCube {
             for (int i = 0; i < 3; i++) {
                 faces[ROTATION_ORDERS_CLOCKWISE[axis][i]].setFace(faces[ROTATION_ORDERS_CLOCKWISE[axis][i + 1]]);
             }
-            faces[ROTATION_ORDERS_CLOCKWISE[axis][3]].setMatrix(buffer);
+            faces[ROTATION_ORDERS_CLOCKWISE[axis][3]].setFace(buffer);
         } else {
             UsefulOperations.equalizeMatrix(faces[ROTATION_ORDERS_CLOCKWISE[axis][3]].getFace(), buffer);
             for (int i = 3; i > 0; i--) {
                 faces[ROTATION_ORDERS_CLOCKWISE[axis][i]].setFace(faces[ROTATION_ORDERS_CLOCKWISE[axis][i - 1]]);
             }
-            faces[ROTATION_ORDERS_CLOCKWISE[axis][0]].setMatrix(buffer);
+            faces[ROTATION_ORDERS_CLOCKWISE[axis][0]].setFace(buffer);
         }
         for (int i = 0; i < FACES_AMOUNT; i++) {
             faces[i].rotate(clockwise);

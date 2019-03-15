@@ -25,7 +25,7 @@ class Face {
         return matrix;
     }
 
-    void setMatrix(int[][] newMatrix) {
+    void setFace(int[][] newMatrix) {
         UsefulOperations.equalizeMatrix(newMatrix, matrix);
     }
 
