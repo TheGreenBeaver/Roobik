@@ -1,10 +1,10 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class RubicTest {
 
@@ -41,25 +41,25 @@ class RubicTest {
                 "            5 5 5      \n" +
                 "            5 5 5      \n", cube3.toString());
         cube2.rotateWholeCube(2, false);
-        assertEquals("        3 3    \n" +
-                "        3 3    \n" +
-                "0 0 4 4 2 2 5 5 \n" +
-                "0 0 4 4 2 2 5 5 \n" +
+        assertEquals("        1 1    \n" +
                 "        1 1    \n" +
-                "        1 1    \n", cube2.toString());
+                "0 0 5 5 2 2 4 4 \n" +
+                "0 0 5 5 2 2 4 4 \n" +
+                "        3 3    \n" +
+                "        3 3    \n", cube2.toString());
         cube4.rotateWholeCube(1, true);
-        assertEquals("                2 2 2 2        \n" +
-                "                2 2 2 2        \n" +
-                "                2 2 2 2        \n" +
-                "                2 2 2 2        \n" +
-                "4 4 4 4 1 1 1 1 5 5 5 5 3 3 3 3 \n" +
-                "4 4 4 4 1 1 1 1 5 5 5 5 3 3 3 3 \n" +
-                "4 4 4 4 1 1 1 1 5 5 5 5 3 3 3 3 \n" +
-                "4 4 4 4 1 1 1 1 5 5 5 5 3 3 3 3 \n" +
+        assertEquals("                0 0 0 0        \n" +
                 "                0 0 0 0        \n" +
                 "                0 0 0 0        \n" +
                 "                0 0 0 0        \n" +
-                "                0 0 0 0        \n", cube4.toString());
+                "5 5 5 5 1 1 1 1 4 4 4 4 3 3 3 3 \n" +
+                "5 5 5 5 1 1 1 1 4 4 4 4 3 3 3 3 \n" +
+                "5 5 5 5 1 1 1 1 4 4 4 4 3 3 3 3 \n" +
+                "5 5 5 5 1 1 1 1 4 4 4 4 3 3 3 3 \n" +
+                "                2 2 2 2        \n" +
+                "                2 2 2 2        \n" +
+                "                2 2 2 2        \n" +
+                "                2 2 2 2        \n", cube4.toString());
     }
 
     private void illegalWholeCubeRotation() {
@@ -87,17 +87,40 @@ class RubicTest {
 
     @Test
     void testLayerRotation() {
-        RubiksCube cube = new RubiksCube(3);
-        cube.rotateLayer(0, 1, true);
-        cube.rotateLayer(1, 0, false);
-        assertEquals("            0 4 4      \n" +
-                "            1 4 4      \n" +
-                "            0 4 4      \n" +
-                "0 0 5 1 2 1 4 2 2 3 3 3 \n" +
-                "1 1 5 1 2 1 4 3 3 0 0 0 \n" +
-                "0 0 5 1 2 1 4 2 2 3 3 3 \n" +
-                "            2 5 5      \n" +
-                "            3 5 5      \n" +
-                "            2 5 5      \n", cube.toString());
+        cube3.rotateLayer(0, 1, true);
+        cube3.rotateLayer(1, 0, false);
+        assertEquals("            2 4 4      \n" +
+                "            3 4 4      \n" +
+                "            2 4 4      \n" +
+                "0 0 4 1 2 1 5 2 2 3 3 3 \n" +
+                "1 1 4 1 2 1 5 3 3 0 0 0 \n" +
+                "0 0 4 1 2 1 5 2 2 3 3 3 \n" +
+                "            0 5 5      \n" +
+                "            1 5 5      \n" +
+                "            0 5 5      \n", cube3.toString());
+        cube3.rotateLayer(2, 2);
+        assertEquals("            2 4 4      \n" +
+                "            3 4 4      \n" +
+                "            5 5 0      \n" +
+                "0 0 4 1 2 3 2 2 5 1 3 3 \n" +
+                "1 1 4 1 2 0 3 3 5 1 0 0 \n" +
+                "0 0 4 1 2 3 2 2 5 1 3 3 \n" +
+                "            4 4 2      \n" +
+                "            1 5 5      \n" +
+                "            0 5 5      \n", cube3.toString());
+    }
+
+    private void getIllegalFace() {
+        cube3.getFace(-1);
+    }
+
+    @Test
+    void testGetFace() {
+        assertThrows(IllegalArgumentException.class, this::getIllegalFace);
+        cube3.rotateWholeCube(2, true);
+        cube3.rotateLayer(1, 2, false);
+        assertEquals("2 2 1 \n" +
+                "2 2 1 \n" +
+                "2 2 1 \n", cube3.getFace(2));
     }
 }
